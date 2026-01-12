@@ -1,6 +1,7 @@
 # JustTray
 
 A lightweight Windows tray application for quick program shortcuts.
+
 <img width="347" height="242" alt="image" src="https://github.com/user-attachments/assets/1616e06a-c4e3-46e7-aa2d-a63299195a66" />
 
 ## Features
