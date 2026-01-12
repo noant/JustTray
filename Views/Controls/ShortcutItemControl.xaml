@@ -1,0 +1,35 @@
+<UserControl x:Class="JustTray.Views.Controls.ShortcutItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="clr-namespace:JustTray.Models"
+             x:Name="Root">
+    
+    <Button Command="{Binding ElementName=Root, Path=ClickCommand}"
+            CommandParameter="{Binding}"
+            Style="{StaticResource ShortcutItemButtonStyle}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Icon Circle -->
+            <Ellipse Grid.Column="0"
+                     Width="18" Height="18"
+                     Margin="8,6,10,6">
+                <Ellipse.Fill>
+                    <SolidColorBrush x:Name="IconBrush" Color="{Binding IconColor, Converter={StaticResource ColorStringConverter}}"/>
+                </Ellipse.Fill>
+            </Ellipse>
+            
+            <!-- Shortcut Name -->
+            <TextBlock Grid.Column="1"
+                       Text="{Binding Name}"
+                       VerticalAlignment="Center"
+                       FontSize="14"
+                       Foreground="{DynamicResource TextBrush}"
+                       TextTrimming="CharacterEllipsis"
+                       Margin="0,0,12,0"/>
+        </Grid>
+    </Button>
+</UserControl>

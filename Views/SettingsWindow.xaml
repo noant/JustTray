@@ -1,0 +1,109 @@
+<Window x:Class="JustTray.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:JustTray.Views.Controls"
+        Title="JustTray Settings"
+        Width="500"
+        Height="550"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundBrush}"
+        ResizeMode="CanMinimize">
+    
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Tab Header -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource SurfaceBrush}"
+                CornerRadius="8"
+                Margin="0,0,0,16">
+            <StackPanel Orientation="Horizontal" Margin="4">
+                <RadioButton x:Name="ShortcutsTab"
+                             Content="Shortcuts"
+                             Style="{StaticResource TabButtonStyle}"
+                             IsChecked="True"
+                             Margin="0,0,4,0"/>
+                <RadioButton x:Name="SettingsTab"
+                             Content="Settings"
+                             Style="{StaticResource TabButtonStyle}"
+                             Margin="4,0,0,0"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Tab Content -->
+        <Grid Grid.Row="1">
+            <!-- Shortcuts Tab -->
+            <Grid Visibility="{Binding IsChecked, ElementName=ShortcutsTab, Converter={StaticResource BoolToVisibilityConverter}}">
+                <controls:ShortcutsRunnerControl 
+                    x:Name="ShortcutsControl"
+                    ShowAddButton="True"
+                    AddCommand="{Binding AddShortcutCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+            </Grid>
+            
+            <!-- Settings Tab -->
+            <Border Visibility="{Binding IsChecked, ElementName=SettingsTab, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    CornerRadius="8"
+                    Padding="20">
+                <StackPanel>
+                    <!-- Theme Selection -->
+                    <TextBlock Text="Theme"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextBrush}"
+                               Margin="0,0,0,8"/>
+                    <ComboBox ItemsSource="{Binding AvailableThemes}"
+                              SelectedItem="{Binding Theme}"
+                              Style="{StaticResource ModernComboBoxStyle}"
+                              Margin="0,0,0,4"/>
+                    <TextBlock Text="Requires application restart"
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,20"/>
+                    
+                    <!-- Settings Folder -->
+                    <TextBlock Text="Settings Folder"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextBrush}"
+                               Margin="0,0,0,8"/>
+                    <Grid Margin="0,0,0,24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0"
+                                 Text="{Binding SettingsFolder, Mode=OneWay}"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource ModernTextBoxStyle}"/>
+                        <Button Grid.Column="1"
+                                Content="Browse..."
+                                Command="{Binding BrowseFolderCommand}"
+                                Style="{StaticResource SecondaryButtonStyle}"
+                                Margin="8,0,0,0"/>
+                    </Grid>
+                    
+                    <!-- Run at Startup -->
+                    <CheckBox Content="Run at Windows startup"
+                              IsChecked="{Binding RunAtStartup}"
+                              Style="{StaticResource ModernCheckBoxStyle}"
+                              Margin="0,0,0,24"/>
+                    
+                    <!-- Spacer -->
+                    <Border Height="1" 
+                            Background="{DynamicResource BorderBrush}"
+                            Margin="0,0,0,24"/>
+                    
+                    <!-- Exit Button -->
+                    <Button Content="Exit Application"
+                            Command="{Binding ExitApplicationCommand}"
+                            Style="{StaticResource DangerButtonStyle}"
+                            HorizontalAlignment="Left"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
