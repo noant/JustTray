@@ -2,6 +2,8 @@
 
 A lightweight Windows tray application for quick program shortcuts.
 
+<img width="347" height="242" alt="image" src="https://github.com/user-attachments/assets/1616e06a-c4e3-46e7-aa2d-a63299195a66" />
+
 ## Features
 
 - Tray icon with customizable shortcuts
@@ -51,3 +53,10 @@ python build.py <output_path>
 Settings stored in `%APPDATA%\JustTray\`:
 - `settings.json` - app settings
 - `shortcuts.json` - shortcuts list
+
+
+<img width="429" height="454" alt="image" src="https://github.com/user-attachments/assets/dc1488c2-6c8a-4f49-b77a-34a7eae05980" />
+<img width="498" height="520" alt="image" src="https://github.com/user-attachments/assets/7373fe10-5595-4377-a4cf-322487ad46d3" />
+<img width="509" height="674" alt="image" src="https://github.com/user-attachments/assets/70e0805f-b942-4777-93c3-46b4acac915d" />
+
+
