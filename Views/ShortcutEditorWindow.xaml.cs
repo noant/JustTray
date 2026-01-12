@@ -24,6 +24,10 @@ public partial class ShortcutEditorWindow : Window
         DataContext = _viewModel;
         
         Title = shortcut == null ? "Add Shortcut" : "Edit Shortcut";
+        
+        // Apply dark title bar based on theme
+        SourceInitialized += (_, _) => 
+            App.ApplyWindowDarkMode(this, ((App)System.Windows.Application.Current).IsDarkTheme);
     }
 
     private void ColorItem_Click(object sender, MouseButtonEventArgs e)

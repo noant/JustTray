@@ -1,7 +1,9 @@
 using System.Drawing;
 using System.IO;
 using System.IO.Pipes;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Interop;
 using Hardcodet.Wpf.TaskbarNotification;
 using JustTray.Services;
 using JustTray.Views;
@@ -14,6 +16,12 @@ public partial class App : Application
 {
     private const string MutexName = "JustTray_SingleInstance_Mutex";
     private const string PipeName = "JustTray_Pipe";
+    
+    // DWM API for dark title bar
+    [DllImport("dwmapi.dll", PreserveSig = true)]
+    private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+    
+    private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
     
     private static Mutex? _mutex;
     private TaskbarIcon? _trayIcon;
@@ -57,8 +65,7 @@ public partial class App : Application
 
         _trayIcon = new TaskbarIcon
         {
-            Icon = LoadTrayIcon(),
-            ToolTipText = "JustTray - Click to open shortcuts"
+            Icon = LoadTrayIcon()
         };
 
         _trayIcon.TrayLeftMouseUp += TrayIcon_LeftClick;
@@ -191,6 +198,21 @@ public partial class App : Application
                 : System.Windows.Media.Color.FromRgb(243, 243, 243);
         }
     }
+
+    /// <summary>
+    /// Applies dark or light title bar to a window based on current theme.
+    /// Call this in window's SourceInitialized event or after Show().
+    /// </summary>
+    public static void ApplyWindowDarkMode(Window window, bool isDark)
+    {
+        var hwnd = new WindowInteropHelper(window).Handle;
+        if (hwnd == IntPtr.Zero) return;
+        
+        int value = isDark ? 1 : 0;
+        DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref value, sizeof(int));
+    }
+
+    public bool IsDarkTheme => _settingsService.Settings.Theme == "Dark";
 
 
     protected override void OnExit(ExitEventArgs e)

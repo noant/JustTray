@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using JustTray.Models;
 using JustTray.Services;
 using JustTray.ViewModels;
+using Application = System.Windows.Application;
 using Shortcut = JustTray.Models.Shortcut;
 
 namespace JustTray.Views;
@@ -31,6 +32,10 @@ public partial class SettingsWindow : Window
         
         DataContext = _settingsViewModel;
         ShortcutsControl.DataContext = _shortcutsViewModel;
+        
+        // Apply dark title bar based on theme
+        SourceInitialized += (_, _) => 
+            App.ApplyWindowDarkMode(this, ((App)Application.Current).IsDarkTheme);
     }
 
     private void AddNewShortcut()
