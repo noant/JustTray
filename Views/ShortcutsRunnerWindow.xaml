@@ -11,6 +11,7 @@
         SizeToContent="WidthAndHeight"
         MinWidth="280"
         MaxWidth="350"
+        MaxHeight="2000"
         WindowStartupLocation="Manual"
         Deactivated="Window_Deactivated">
     

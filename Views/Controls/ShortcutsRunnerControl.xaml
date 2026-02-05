@@ -16,8 +16,7 @@
             
             <!-- Shortcuts List -->
             <ScrollViewer Grid.Row="0"
-                          VerticalScrollBarVisibility="Auto"
-                          MaxHeight="400">
+                          VerticalScrollBarVisibility="Auto">
                 <ListBox ItemsSource="{Binding Shortcuts}"
                          x:Name="ShortcutsList"
                          Background="Transparent"
