@@ -21,6 +21,9 @@ public partial class App : Application
     [DllImport("dwmapi.dll", PreserveSig = true)]
     private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
     
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern bool DestroyIcon(IntPtr hIcon);
+    
     private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
     
     private static Mutex? _mutex;
@@ -141,7 +144,7 @@ public partial class App : Application
         }
         
         // Fallback: create a simple circle icon
-        var bitmap = new Bitmap(32, 32);
+        using var bitmap = new Bitmap(32, 32);
         using (var g = Graphics.FromImage(bitmap))
         {
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -149,7 +152,16 @@ public partial class App : Application
             using var brush = new SolidBrush(Color.FromArgb(0, 120, 212));
             g.FillEllipse(brush, 2, 2, 28, 28);
         }
-        return Icon.FromHandle(bitmap.GetHicon());
+        
+        var hIcon = bitmap.GetHicon();
+        try
+        {
+            return Icon.FromHandle(hIcon);
+        }
+        finally
+        {
+            DestroyIcon(hIcon);
+        }
     }
 
     private void TrayIcon_LeftClick(object sender, RoutedEventArgs e)
