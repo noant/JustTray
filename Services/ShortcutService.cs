@@ -153,7 +153,7 @@ public class ShortcutService
             };
 
             var process = Process.Start(startInfo);
-            
+
             if (process != null)
             {
                 _logger.LogInformation("Shortcut '{ShortcutName}' started (PID: {ProcessId})", 
@@ -174,12 +174,23 @@ public class ShortcutService
                     }
                 });
             }
+            else
+            {
+                var errorMsg = $"Process.Start returned null for shortcut '{shortcut.Name}' ({executablePath})";
+                _logger.LogError(errorMsg);
+                System.Windows.MessageBox.Show(
+                    errorMsg,
+                    "Error",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
+            }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to execute shortcut '{ShortcutName}'", shortcut.Name);
+            _logger.LogError(ex, "Failed to execute shortcut '{ShortcutName}' ({ExecutablePath})", 
+                shortcut.Name, executablePath);
             System.Windows.MessageBox.Show(
-                $"Failed to execute shortcut: {ex.Message}",
+                $"Failed to execute shortcut '{shortcut.Name}':\n{ex.Message}",
                 "Error",
                 System.Windows.MessageBoxButton.OK,
                 System.Windows.MessageBoxImage.Error);
